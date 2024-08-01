@@ -4,14 +4,15 @@ import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Set;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 public class MovieDto {
 
     private Integer movieId;
@@ -33,5 +34,5 @@ public class MovieDto {
     private String poster;
 
     @NotBlank(message = "Please provide poster's url")
-    private String postUrl;
+    private String posterUrl;
 }
