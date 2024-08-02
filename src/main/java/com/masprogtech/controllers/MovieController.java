@@ -3,6 +3,7 @@ package com.masprogtech.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.masprogtech.dto.MovieDto;
+import com.masprogtech.exceptions.EmptyFileException;
 import com.masprogtech.services.MovieService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,9 @@ public class MovieController {
     public ResponseEntity<MovieDto> addMovieHandler(@RequestPart MultipartFile file,
                                                     @RequestPart String movieDto) throws IOException {
 
+        if(file.isEmpty()){
+            throw new EmptyFileException("File is  empty please send another file!");
+        }
        MovieDto dto = convertToMovieDto(movieDto);
        return new ResponseEntity<>(movieService.addMovie(dto, file), HttpStatus.CREATED);
     }

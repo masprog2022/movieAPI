@@ -2,6 +2,8 @@ package com.masprogtech.services;
 
 import com.masprogtech.dto.MovieDto;
 import com.masprogtech.entities.Movie;
+import com.masprogtech.exceptions.FileExistsException;
+import com.masprogtech.exceptions.MovieNotFoundException;
 import com.masprogtech.repositories.MovieRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -38,7 +40,7 @@ public class MovieServiceImpl implements MovieService{
 
         // 1. upload the file
         if (Files.exists(Paths.get(path + File.separator + file.getOriginalFilename()))){
-            throw new RuntimeException("File already exists! please enter another file name!");
+            throw new FileExistsException("File already exists! please enter another file name!");
         }
 
         String uploadedFileName = fileService.uploadFile(path, file);
@@ -82,7 +84,7 @@ public class MovieServiceImpl implements MovieService{
         // 1. check the data in DB and if exists, fetch the data of given ID
 
        Movie movie =  movieRepository.findById(movieId).orElseThrow(
-                ()-> new RuntimeException("Movie does not exists!")
+                ()-> new MovieNotFoundException("Movie does not exists!")
         );
         // 2. generate posterUrl
         String posterUrl = baseUrl + "/file/" + movie.getPoster();
@@ -136,7 +138,7 @@ public class MovieServiceImpl implements MovieService{
         // 1. check if movie object exists with given movieId
 
         Movie mv = movieRepository.findById(movieId)
-                .orElseThrow(() -> new RuntimeException("Movie not found!"));
+                .orElseThrow(() -> new MovieNotFoundException("Movie not found!"));
 
         // 2. if file is null, do nothing
         // if file is not null, then delete existing file associated with the record,
@@ -186,7 +188,7 @@ public class MovieServiceImpl implements MovieService{
         // 1. check if movie object exists in DB
 
         Movie mv = movieRepository.findById(movieId)
-                .orElseThrow(() -> new RuntimeException("Movie not found!"));
+                .orElseThrow(() -> new MovieNotFoundException("Movie not found!"));
         Integer id = mv.getMovieId();
 
         // 2. delete the file associated with this object
