@@ -36,7 +36,7 @@ public class MovieController {
                                                     @RequestPart String movieDto) throws IOException {
 
         if (file.isEmpty()) {
-            throw new EmptyFileException("File is  empty please send another file!");
+            throw new EmptyFileException("File is empty please send another file!");
         }
         MovieDto dto = convertToMovieDto(movieDto);
         return new ResponseEntity<>(movieService.addMovie(dto, file), HttpStatus.CREATED);
